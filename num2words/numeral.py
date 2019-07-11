@@ -63,8 +63,6 @@ class Numeral:
         :param num: positive number to be represented as a numeral
         :type num: int
         """
-        assert isinstance(num, int)
-        assert num > 0
         self.num = num
         self.numeral = self.to_numeral(num)
 
@@ -75,7 +73,8 @@ class Numeral:
 
         :param num: positive integer to be converted to an English numeral
         :type num: int
-        :return:
+        :return: English numeral representation of the number
+        :rtype: str
         """
         return "some text"
 
@@ -83,9 +82,10 @@ class Numeral:
     def __parse_small(cls, num):
         """Helper class method which parses numbers less than 1000
 
-        :param num: positive integer less than 1000
+        :param num: positive number to convert
         :type num: int
-        :return:
+        :return: English numeral representation of the number
+        :rtype: str
         """
         pass
 
@@ -93,12 +93,20 @@ class Numeral:
     def __parse_large(cls, num, sig):
         """Helper class method which handles parsing numbers into numerals
 
-        This is the workhorse of the converter
+        This is the workhorse of the converter where large numbers are handled.
+        It works recursively calling itself at different significance levels to
+        capture different
 
-        :param num:
-        :param sig:
-        :return:
+        :param num: positive number to convert
+        :type num: int
+        :param sig: current significance level
+        :type sig: int
+        :return: English numeral representation of the number
+        :rtype: str
         """
+        assert isinstance(num, int), \
+            f"Incorrect type: {str(type(num))}; int expected"
+        assert num > 0, f"Argument {num} is <= 0; positive int expected"
         pass
 
     def __repr__(self):
