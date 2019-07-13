@@ -4,7 +4,7 @@ This module contains a Numeral class to encapsulate a positive integer and
 provide representation for it in plain English numeral form.
 """
 
-from num2words.utils import NumberTooLarge
+from num2words import NumberTooLarge
 
 _SMALL_NUMS = {
     0: "",
@@ -106,10 +106,11 @@ class WordNumeral:
     A class method ``to_numeral`` is exposed and can be used to convert any
     number to a numeral representation.
 
-    Calling an instance of a object, or accessing the class method through it
-    both return a numeral representation of the number passed as an argument.
+    Calling an instance of a object re-assigns the num and numeral properties
+    to correspond to the ``num`` argument passed and returns the English
+    numeral representation.
     """
-    def __init__(self, num):
+    def __init__(self, num=0):
         """Initialise a Numeral object
 
         :param num: positive number to be represented as a numeral
@@ -234,8 +235,10 @@ class WordNumeral:
 
         return [x for x in numeral if x != ""]
 
-    def __call__(self, *args, **kwargs):
-        return self.to_numeral(*args, **kwargs)
+    def __call__(self, num):
+        self._num = num
+        self._numeral = self.to_numeral(num)
+        return self.numeral
 
     def __repr__(self):
         return f'Numeral({self.num})'
