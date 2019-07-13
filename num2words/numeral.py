@@ -4,6 +4,8 @@ This module contains a Numeral class to encapsulate a positive integer and
 provide representation for it in plain English numeral form.
 """
 
+from num2words.utils import NumberTooLarge
+
 _SMALL_NUMS = {
     0: "",
     1: "one",
@@ -92,7 +94,7 @@ _SIG_UNITS = {
 """dict: significance units when dividing a number by 1000, e.g. thousand"""
 
 
-class Numeral:
+class WordNumeral:
     """This is a class for english numerals.
 
     It can be used to get a given integer's representation in plain English.
@@ -145,10 +147,13 @@ class Numeral:
 
         >>> Numeral.to_numeral(1400)
         'one thousand four hundred'
+
         >>> Numeral.to_numeral(15025)
         'fifteen thousand and twenty five'
+
         >>> Numeral.to_numeral(337)
         'three hundred and thirty seven'
+
         >>> Numeral.to_numeral(563202086)
         'five hundred and sixty three million two hundred and two thousand and eighty six'
         """
@@ -197,14 +202,17 @@ class Numeral:
         :type sig: int
         :return: English numeral representation of the number
         :rtype: list[str]
-        :raises AssertionError: raises an exception
+        :raises: TypeError, ValueError, NumberTooLarge
         """
-        assert isinstance(num, int), \
-            f"Incorrect type: {str(type(num))}; int expected"
-        assert num >= 0, f"Argument {num} is < 0; positive int expected"
-        assert sig <= max(_SIG_UNITS.keys()), \
-            f"Cannot work with numbers lerger than " \
-                f"'{_SIG_UNITS[max(_SIG_UNITS.keys())]}'"
+        if not isinstance(num, int):
+            raise TypeError(f"'num' must be int, not {type(num)}")
+
+        if num < 0:
+            raise ValueError(f"argument {num} is < 0; positive int expected")
+
+        if sig > max(_SIG_UNITS.keys()):
+            max_sig = _SIG_UNITS[max(_SIG_UNITS.keys())]
+            raise NumberTooLarge(f"can only handle up to {max_sig}s")
 
         if num == 0 and sig == 0:
             return ["zero"]
@@ -216,10 +224,13 @@ class Numeral:
         else:
             numeral = cls._parse_large(lrg, sig + 1)
 
-        if rem < 100 and sig == 0 and lrg != 0:
+        if (0 < rem < 100) and (sig == 0) and (lrg != 0):
             numeral += ["and"]
+        elif lrg != 0 and ((sig > 0 and rem > 0) or (sig == 0 and rem >= 100)):
+            numeral[-1] = numeral[-1] + ","
 
-        numeral += cls._parse_small(rem) + [_SIG_UNITS[sig]]
+        if rem > 0:
+            numeral += cls._parse_small(rem) + [_SIG_UNITS[sig]]
 
         return [x for x in numeral if x != ""]
 
@@ -233,31 +244,31 @@ class Numeral:
         return self.numeral
 
     def __lt__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num < other.num
 
     def __le__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num <= other.num
 
     def __eq__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num == other.num
 
     def __ne__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num != other.num
 
     def __gt__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num > other.num
 
     def __ge__(self, other):
-        assert isinstance(other, Numeral), \
-            "Must compare with another Numeral"
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
         return self.num >= other.num
