@@ -1,7 +1,6 @@
 import pytest
 from random import randint
-from num2words import WordNumeral
-from num2words.utils import NumberTooLarge
+from num2words import WordNumeral, NumberTooLarge
 
 
 @pytest.mark.parametrize("num, answer", [

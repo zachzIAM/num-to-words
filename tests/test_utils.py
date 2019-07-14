@@ -1,5 +1,5 @@
 import pytest
-from num2words.utils import input_handler, InvalidNumber
+from num2words import input_handler, InvalidNumber
 
 
 @pytest.mark.parametrize("input_str, answer", [
