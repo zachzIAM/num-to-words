@@ -6,6 +6,8 @@ provide representation for it in plain English numeral form.
 
 from num2words import NumberTooLarge
 
+# region Module Variables
+
 _SMALL_NUMS = {
     0: "",
     1: "one",
@@ -57,7 +59,7 @@ _SIG_UNITS = {
     15: "quattuordecillion",
     16: "quinquadecillion",
     17: "sexdecillion",
-    18: "septen-decillion",
+    18: "septendecillion",
     19: "octodecillion",
     20: "novemdecillion",
     21: "vigintillion",
@@ -93,6 +95,8 @@ _SIG_UNITS = {
 }
 """dict: significance units when dividing a number by 1000, e.g. thousand"""
 
+# endregion
+
 
 class WordNumeral:
     """This is a class for english numerals.
@@ -110,6 +114,9 @@ class WordNumeral:
     to correspond to the ``num`` argument passed and returns the English
     numeral representation.
     """
+    # region Constructor
+    # TODO consider inheriting from int instead; will simplify the API as we
+    #   won't have to override all of the basic operators
     def __init__(self, num=0):
         """Initialise a Numeral object
 
@@ -120,7 +127,16 @@ class WordNumeral:
         """
         self._num = num
         self._numeral = self.to_numeral(num)
+    # endregion
 
+    # region Caller
+    def __call__(self, num):
+        self._num = num
+        self._numeral = self.to_numeral(num)
+        return self.numeral
+    # endregion
+
+    # region Properties
     @property
     def num(self):
         return self._num
@@ -128,7 +144,9 @@ class WordNumeral:
     @property
     def numeral(self):
         return self._numeral
+    # endregion
 
+    # region Class Methods
     @classmethod
     def to_numeral(cls, num):
         """Class method which translates a positive integer to English numeral.
@@ -146,16 +164,16 @@ class WordNumeral:
 
         :example:
 
-        >>> Numeral.to_numeral(1400)
+        >>> WordNumeral.to_numeral(1400)
         'one thousand four hundred'
 
-        >>> Numeral.to_numeral(15025)
+        >>> WordNumeral.to_numeral(15025)
         'fifteen thousand and twenty five'
 
-        >>> Numeral.to_numeral(337)
+        >>> WordNumeral.to_numeral(337)
         'three hundred and thirty seven'
 
-        >>> Numeral.to_numeral(563202086)
+        >>> WordNumeral.to_numeral(563202086)
         'five hundred and sixty three million two hundred and two thousand and eighty six'
         """
         return " ".join(cls._parse_large(num, 0))
@@ -208,6 +226,7 @@ class WordNumeral:
         if not isinstance(num, int):
             raise TypeError(f"'num' must be int, not {type(num)}")
 
+        # TODO making this work with negative numbers is trivial
         if num < 0:
             raise ValueError(f"argument {num} is < 0; positive int expected")
 
@@ -234,18 +253,17 @@ class WordNumeral:
             numeral += cls._parse_small(rem) + [_SIG_UNITS[sig]]
 
         return [x for x in numeral if x != ""]
+    # endregion
 
-    def __call__(self, num):
-        self._num = num
-        self._numeral = self.to_numeral(num)
-        return self.numeral
-
+    # region Display Overrides
     def __repr__(self):
         return f'Numeral({self.num})'
 
     def __str__(self):
         return self.numeral
+    # endregion
 
+    # region Logical Operator Overrides
     def __lt__(self, other):
         if not isinstance(other, type(self)):
             raise TypeError(f"must compare with another {type(self)}")
@@ -275,3 +293,68 @@ class WordNumeral:
         if not isinstance(other, type(self)):
             raise TypeError(f"must compare with another {type(self)}")
         return self.num >= other.num
+    # endregion
+
+    # region Arithmetic Operator Overrides
+    def __add__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num + other.num)
+
+    def __sub__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num - other.num)
+
+    def __mul__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num * other.num)
+
+    def __truediv__(self, other):
+        raise NotImplementedError("cannot guarantee an integer. use // instead")
+
+    def __floordiv__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num // other.num)
+
+    def __mod__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num % other.num)
+
+    def __divmod__(self, other):
+        return self.__floordiv__(other), self.__mod__(other)
+
+    def __pow__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num**other.num)
+
+    def __lshift__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num << other.num)
+
+    def __rshift__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num >> other.num)
+
+    def __and__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num & other.num)
+
+    def __or__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num | other.num)
+
+    def __xor__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"must compare with another {type(self)}")
+        return WordNumeral(self.num ^ other.num)
+    # endregion
+

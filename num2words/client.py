@@ -22,6 +22,7 @@ class Num2Words:
     it in turn processes and returns the English numeral value of the int
     contained within the file.
     """
+    # region Constructor
     def __init__(self, handler=input_handler):
         """
         Constructor for the Num2Words class. It requires a handler function
@@ -36,7 +37,9 @@ class Num2Words:
         """
         self._handler = handler
         self._word_numeral = WordNumeral()
+    # endregion
 
+    # region Caller
     def __call__(self, file):
         """
         Calling an instance of an object with a valid input file path makes the
@@ -65,16 +68,9 @@ class Num2Words:
             raise
 
         return self._word_numeral(num)
+    # endregion
 
-    def text_to_numeral(self, text):
-        try:
-            num = self._handler(text)
-        except InvalidNumber:
-            return "number invalid"
-        except Exception:
-            raise
-        return self._word_numeral.to_numeral(num)
-
+    # region Properties
     @property
     def file_contents(self):
         return self._file_contents
@@ -90,7 +86,20 @@ class Num2Words:
     @property
     def word_numeral(self):
         return self._word_numeral.numeral
+    # endregion
 
+    # region Methods
+    def text_to_numeral(self, text):
+        try:
+            num = self._handler(text)
+        except InvalidNumber:
+            return "number invalid"
+        except Exception:
+            raise
+        return self._word_numeral.to_numeral(num)
+    # endregion
+
+    # region Display Overrides
     def __repr__(self):
         return f"Num2Words({self.__dict__['_handler']})"
 
@@ -103,3 +112,4 @@ class Num2Words:
         txt += [f.format("num", self.num, width=align)]
         txt += [f.format("word_numeral", self.word_numeral, width=align)]
         return "\n".join(txt)
+    # endregion

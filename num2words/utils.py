@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# region Exceptions
 class Error(Exception):
     """Base class for other errors"""
     pass
@@ -14,6 +15,7 @@ class NumberTooLarge(Error):
 class InvalidNumber(Error):
     """Raises an error when the input string does not contain a valid number"""
     pass
+# endregion
 
 
 def input_handler(input_string: str) -> int:
@@ -24,6 +26,7 @@ def input_handler(input_string: str) -> int:
     fullstops or spaces to denote decimals or thousands, millions, etc.
 
     :param input_string: text to search for a numeric value.
+    :type input_string: str
     :return: the number detected in the string
     :raise: InvalidNumber
     :example:
