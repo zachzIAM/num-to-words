@@ -14,14 +14,14 @@ in this repo.
 #### Just the package
 You can get started quickly by installing the package straight from Github:
 
-```python
+```bash
 pip install git+https://github.com/zachzIAM/num-to-words.git@master
 ```
 
 In case the above command is failing, please try using the `--user` flag to 
 avoid user-level permissions issues.
 
-```python
+```bash
 pip install --user git+https://github.com/zachzIAM/num-to-words.git@master
 ```
 
@@ -31,7 +31,7 @@ modules directly. Cloning the repo would let you install the package using
 setup-tools too. You can navigate to the root of the cloned repo via terminal /
 CMD and run:
 
-```python
+```bash
 pip install -e .
 ```
 
@@ -40,7 +40,7 @@ If you do clone the repo you may want to create a new virtual environment for
 the repo and install `pytest` in it. `pytest` can then be run on the entire 
 **tests** folder. Navigate to the root of the repository and run:
 
-```python
+```bash
 python -m pytest tests/
 ```
 
@@ -48,7 +48,7 @@ python -m pytest tests/
 ### Command line tool
 Once installed the package exposes a CLI utility called `num2words`.
 Usage help can be obtained by running:
-```python
+```bash
 num2words --help
 ``` 
 
@@ -223,9 +223,11 @@ reduced to the following algorithm:
 5. append return value of recursive call to return value of remainder 
 conversion and return the combined value
 
+<p align="center">
 
 ![parse-algorithm][parse-algorithm]
 
+</p>
 
 As the recursion goes deeper we ascend the value until there is no large number
 to process. As the recursion unwinds we obtain the remainder word numeral for
