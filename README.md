@@ -223,12 +223,6 @@ reduced to the following algorithm:
 5. append return value of recursive call to return value of remainder 
 conversion and return the combined value
 
-<p align="center">
-
-![parse-algorithm][parse-algorithm]
-
-</p>
-
 As the recursion goes deeper we ascend the value until there is no large number
 to process. As the recursion unwinds we obtain the remainder word numeral for
 the highest significance first appending it to the significance name and to the
@@ -283,8 +277,8 @@ significantly improve future development and maintenance.
 [magic-methods]: https://www.python-course.eu/python3_magic_methods.php
 [increment]: http://latex.codecogs.com/gif.latex?10^3
 [n]: http://latex.codecogs.com/gif.latex?n
-[largest]: http://latex.codecogs.com/gif.latex?10^153-1
-[decillion]: http://latex.codecogs.com/gif.latex?10^33
+[largest]: http://latex.codecogs.com/svg.latex?10^{153}-1
+[decillion]: http://latex.codecogs.com/svg.latex?10^{33}
 [number-extensions]: https://en.wikipedia.org/wiki/Names_of_large_numbers#Extensions_of_the_standard_dictionary_numbers
 [travis]: https://travis-ci.org/
 [codecov]: https://codecov.io/
