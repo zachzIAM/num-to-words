@@ -223,6 +223,8 @@ reduced to the following algorithm:
 5. append return value of recursive call to return value of remainder 
 conversion and return the combined value
 
+![parse-algorithm][parse-algorithm]
+
 As the recursion goes deeper we ascend the value until there is no large number
 to process. As the recursion unwinds we obtain the remainder word numeral for
 the highest significance first appending it to the significance name and to the
